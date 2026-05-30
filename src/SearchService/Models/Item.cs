@@ -17,6 +17,6 @@ public class Item : Entity
     public required string Model { get; set; }
     public int Year { get; set; }
     public required string Color { get; set; }
-    private int Mileage { get; set; }
+    public int Mileage { get; set; }
     public required string ImageUrl { get; set; }
 }
