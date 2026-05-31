@@ -87,6 +87,9 @@ public class AuctionsController : ControllerBase
         auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
         auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
 
+        // передача данных в RabbitMQ
+        await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
+
         var result = await _context.SaveChangesAsync() > 0;
         if (result) return Ok();
 
@@ -102,6 +105,9 @@ public class AuctionsController : ControllerBase
 
         // TODO: check seller == username
         _context.Auctions.Remove(auction);
+
+        var deletedAuction = _mapper.Map<AuctionDto>(auction);
+        await _publishEndpoint.Publish<AuctionDeleted>(new { Id = auction.Id.ToString() });
 
         var result = await _context.SaveChangesAsync() > 0;
         if (result) return Ok();
