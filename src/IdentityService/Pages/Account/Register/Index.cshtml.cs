@@ -16,7 +16,7 @@ public class Index : PageModel
     private readonly UserManager<ApplicationUser> _userManager;
 
     [BindProperty] public RegisterViewModel Input { get; set; }
-    [BindProperty] public bool RegusterSuccess { get; set; }
+    [BindProperty] public bool RegisterSuccess { get; set; }
 
     public Index(UserManager<ApplicationUser> userManager)
     {
@@ -51,7 +51,7 @@ public class Index : PageModel
                 {
                     new Claim(JwtClaimTypes.Name, Input.FullName)
                 });
-                RegusterSuccess = true;
+                RegisterSuccess = true;
             }
         }
 
